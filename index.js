@@ -16,7 +16,7 @@ const fetchData = async () => {
     // params are from the OMDb API documentation: an API key and a 's' search parameter
         params: {
             apikey: process.env.API_KEY,
-            s: 'avengers'
+            i: 'tt0848228'
         }
     });
 
