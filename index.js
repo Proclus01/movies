@@ -32,25 +32,33 @@ const fetchData = async (searchTerm) => {
 // Select the input box
 const input = document.querySelector('input');
 
-// Captures the timeoutId when a setTimeout is activated
-let timeoutId;
+// Debounce outputs a function that serves as a wrapper for onInput  
+// in order to restrict the calls we can make to onInput
+// Debounce take as input a function
+const debounce = (func) => {
+    let timeoutId;
+
+    // return a wrapper function to restrict calls to onInput
+    return (...args) => {
+        // clear the current timeoutId and stop the existing timer
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+
+        // Limit how often the input function gets invoked
+        // It will be called 1s after last input
+        timeoutId = setTimeout(() => {
+            // .apply passes in an array of arguments as separate arguments in function
+            func.apply(null, args);
+        }, 1000);
+        
+    };
+};
 
 // Callback for event listener
 const onInput = (event) => {
-
-    // clear the current timeoutId and stop the existing timer
-    if (timeoutId) {
-        clearTimeout(timeoutId);
-    }
-
-    // new timeoutId also has callback that fetches API data
-    // fetches data after 1 second from last key event
-    timeoutId = setTimeout(() => {
-        // Call the 'fetchData' function and pass in the user search term
         fetchData(event.target.value);
-    }, 1000);
-
 };
 
 // Attach an event listener to the input box
-input.addEventListener('input', onInput);
+input.addEventListener('input', debounce(onInput));
