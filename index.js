@@ -25,16 +25,16 @@ const fetchData = async (searchTerm) => {
         }
     });
 
-    // test that we have the data
-    console.log(response.data);
+    return response.data.Search;
 };
 
 // Select the input box
 const input = document.querySelector('input');
 
 // Callback for event listener
-const onInput = (event) => {
-        fetchData(event.target.value);
+const onInput = async (event) => {
+    const movies = await fetchData(event.target.value);
+    console.log(movies);
 };
 
 // Attach an event listener to the input box
