@@ -1,22 +1,27 @@
 //jshint esversion: 7
 
 // comment out the line below to make axios work in-browser
-const { default: axios } = require("axios");
+// const { default: axios } = require("axios");
 
 // require dotenv to isolate API key in the .env file
-require('dotenv').config();
+// require('dotenv').config();
 
 // Fetch some data using an async function
-// Two arguments are taken: a URI and a {params: {}} object
-const fetchData = async () => {
+// Accepts a user text input and performs a search of OMDb
+const fetchData = async (searchTerm) => {
 
     // response stores the axios.get request
+    // Two arguments are taken: a URI and a {params: {}} object
     const response = await axios.get('http://www.omdbapi.com/', {
 
     // params are from the OMDb API documentation: an API key and a 's' search parameter
+    // switch 's' for 'i' when you need to do a lookup instead of a search
         params: {
-            apikey: process.env.API_KEY,
-            i: 'tt0848228'
+            // uncomment the line below to use your .env for an API key if you have one
+            // apikey: process.env.API_KEY,
+
+            apikey: '', // or please add in your own API key
+            s: searchTerm
         }
     });
 
@@ -24,5 +29,13 @@ const fetchData = async () => {
     console.log(response.data);
 };
 
-// Run the function
-fetchData();
+// Select the input box
+const input = document.querySelector('input');
+
+// Attach an event listener to the input box
+input.addEventListener('input', 
+    (event) => {
+        // Call the 'fetchData' function and pass in the user search term
+        fetchData(event.target.value);
+    }
+);
