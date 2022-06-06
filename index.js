@@ -34,8 +34,8 @@ const input = document.querySelector('input');
 
 // Debounce outputs a function that serves as a wrapper for onInput  
 // in order to restrict the calls we can make to onInput
-// Debounce take as input a function
-const debounce = (func) => {
+// Debounce take as input a function, and delay in ms with default at 1000
+const debounce = (func, delay = 1000) => {
     let timeoutId;
 
     // return a wrapper function to restrict calls to onInput
@@ -46,11 +46,11 @@ const debounce = (func) => {
         }
 
         // Limit how often the input function gets invoked
-        // It will be called 1s after last input
+        // It will be called by 'delay' amount after last input
         timeoutId = setTimeout(() => {
             // .apply passes in an array of arguments as separate arguments in function
             func.apply(null, args);
-        }, 1000);
+        }, delay);
         
     };
 };
@@ -61,4 +61,4 @@ const onInput = (event) => {
 };
 
 // Attach an event listener to the input box
-input.addEventListener('input', debounce(onInput));
+input.addEventListener('input', debounce(onInput, 500));
