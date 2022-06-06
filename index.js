@@ -34,7 +34,18 @@ const input = document.querySelector('input');
 // Callback for event listener
 const onInput = async (event) => {
     const movies = await fetchData(event.target.value);
-    console.log(movies);
+    
+    // Generate a list of HTML objects programmatically from the movies.Search list
+    for (let movie of movies) {
+        const div = document.createElement('div');
+
+        div.innerHTML = `
+            <img src="${movie.Poster}" />
+            <h1>${movie.Title} (${movie.Year})</h1>
+        `;
+
+        document.querySelector('#target').appendChild(div);
+    }
 };
 
 // Attach an event listener to the input box
