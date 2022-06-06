@@ -32,10 +32,25 @@ const fetchData = async (searchTerm) => {
 // Select the input box
 const input = document.querySelector('input');
 
-// Attach an event listener to the input box
-input.addEventListener('input', 
-    (event) => {
+// Captures the timeoutId when a setTimeout is activated
+let timeoutId;
+
+// Callback for event listener
+const onInput = (event) => {
+
+    // clear the current timeoutId and stop the existing timer
+    if (timeoutId) {
+        clearTimeout(timeoutId);
+    }
+
+    // new timeoutId also has callback that fetches API data
+    // fetches data after 1 second from last key event
+    timeoutId = setTimeout(() => {
         // Call the 'fetchData' function and pass in the user search term
         fetchData(event.target.value);
-    }
-);
+    }, 1000);
+
+};
+
+// Attach an event listener to the input box
+input.addEventListener('input', onInput);
