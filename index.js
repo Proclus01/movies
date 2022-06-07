@@ -25,6 +25,13 @@ const fetchData = async (searchTerm) => {
         }
     });
 
+    // if there's an error due to no file being returned
+    // then make sure that at least an empty array is returned
+    // since our onInput expects a parameter
+    if (response.data.Error) {
+        return [];
+    }
+
     return response.data.Search;
 };
 
