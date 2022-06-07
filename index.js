@@ -35,8 +35,24 @@ const fetchData = async (searchTerm) => {
     return response.data.Search;
 };
 
+const root = document.querySelector('.autocomplete');
+
+root.innerHTML = `
+    <label><b>Search for a Movie</b></label>
+    <input class="input" />
+    <div class="dropdown">
+        <div class="dropdown-menu">
+            <div class="dropdown-content results"></div>
+        </div>
+    </div>
+`;
+
 // Select the input box
 const input = document.querySelector('input');
+
+// More selectors
+const dropdown = document.querySelector('.dropdown');
+const resultsWrapper = document.querySelector('.results');
 
 // Callback for event listener
 const onInput = async (event) => {
