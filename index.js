@@ -1,9 +1,9 @@
 //jshint esversion: 7
 
-// comment out the line below to make axios work in-browser
+// comment out the line below to enable axios script for in-browser use
 // const { default: axios } = require("axios");
 
-// require dotenv to isolate API key in the .env file
+// require dotenv to isolate API key in the .env file (also comment out for in-browser use)
 // require('dotenv').config();
 
 // Fetch some data using an async function
@@ -52,13 +52,16 @@ root.innerHTML = `
 // Select the input box
 const input = document.querySelector('input');
 
-// More selectors
+// Selectors for Bulma CSS objects
 const dropdown = document.querySelector('.dropdown');
 const resultsWrapper = document.querySelector('.results');
 
 // Callback for event listener
 const onInput = async (event) => {
     const movies = await fetchData(event.target.value);
+
+    // reset the search results first
+    resultsWrapper.innerHTML = '';
     
     // Turn on the isActive flag inside of our menu item (Bulma CSS)
     dropdown.classList.add('is-active');
@@ -67,12 +70,15 @@ const onInput = async (event) => {
     for (let movie of movies) {
         const option = document.createElement('a');
 
+        // Check if the poster img has a link, and clear link if val = 'N/A'
+        const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
+
         // Style the menu using Bulma CSS
         option.classList.add('dropdown-item');
 
         // Append HTML to the anchor tag
         option.innerHTML = `
-            <img src="${movie.Poster}" />
+            <img src="${imgSrc}" />
             ${movie.Title} (${movie.Year})
         `;
 
