@@ -6,6 +6,9 @@
 // require dotenv to isolate API key in the .env file (also comment out for in-browser use)
 // require('dotenv').config();
 
+const key = ''; // please add in your own API key
+// const key = process.env.API_KEY; // or use a .env file instead
+
 // Fetch some data using an async function
 // Accepts a user text input and performs a search of OMDb
 const fetchData = async (searchTerm) => {
@@ -17,10 +20,7 @@ const fetchData = async (searchTerm) => {
     // params are from the OMDb API documentation: an API key and a 's' search parameter
     // switch 's' for 'i' when you need to do a lookup instead of a search
         params: {
-            // uncomment the line below to use your .env for an API key if you have one
-            // apikey: process.env.API_KEY,
-
-            apikey: '', // or please add in your own API key
+            apikey: key, 
             s: searchTerm
         }
     });
@@ -94,6 +94,9 @@ const onInput = async (event) => {
 
             // Update the text inside the input
             input.value = movie.Title;
+
+            // Selecting a movie from  the menu
+            onMovieSelect(movie);
         });
 
         // Append our looped elements to the results-wrapper (Bulma)
@@ -112,3 +115,21 @@ document.addEventListener('click', event => {
         dropdown.classList.remove('is-active');
     }
 });
+
+// Helper function for onInput.
+// onMovieSelect does a follow up search to fetch the selected movie 
+// using the movie.imdbID attribute
+const onMovieSelect = async (movie) => {
+    const response = await axios.get('http://www.omdbapi.com/', {
+
+        // params are from the OMDb API documentation: an API key and a 's' search parameter
+        // switch 's' for 'i' when you need to do a lookup instead of a search
+            params: {
+                apikey: key,
+                i: movie.imdbID
+            }
+        });
+
+    // log the movie data
+    console.log(response.data);
+};
