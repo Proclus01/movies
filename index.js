@@ -57,7 +57,10 @@ const dropdown = document.querySelector('.dropdown');
 const resultsWrapper = document.querySelector('.results');
 
 // Callback for event listener
+// onInput contains a large part of the main logic of this app
+// It appends a series of HTML objects to the 'root' dropdown menu, styled with Bulma CSS
 const onInput = async (event) => {
+    // Get the movie list from OMDb API
     const movies = await fetchData(event.target.value);
 
     // If there are no results, return nothing
@@ -88,6 +91,7 @@ const onInput = async (event) => {
             ${movie.Title} (${movie.Year})
         `;
 
+        // Add an event listener to the anchor tag for menu functionality
         option.addEventListener('click', () => {
             // Make menu disappear on click of anchor
             dropdown.classList.remove('is-active');
@@ -130,6 +134,29 @@ const onMovieSelect = async (movie) => {
             }
         });
 
-    // log the movie data
-    console.log(response.data);
+    // Insert movieTemplate's HTML into the #summary tag
+    document.querySelector('#summary').innerHTML = movieTemplate(response.data);
+};
+
+// Takes movie data from onMovieSelect and generates HTML from the data
+// Once a user clicks a movie to select it, movieTemplate renders the selection
+const movieTemplate = (movieDetail) => {
+    return `
+        <article class="media">
+        
+            <figure class="media-left">
+                <p class="image">
+                    <img src="${movieDetail.Poster}" />
+                </p>
+            </figure>
+            <div class="content">
+                <div>
+                    <h1>${movieDetail.Title}</h1>
+                    <h4>${movieDetail.Genre}</h4>
+                    <p>${movieDetail.Plot}</p>
+                </div>
+            </div>
+        
+        </article>
+    `;
 };
