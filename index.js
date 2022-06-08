@@ -35,8 +35,10 @@ const fetchData = async (searchTerm) => {
     return response.data.Search;
 };
 
+// Select the autocomplete HTML tag in index.html
 const root = document.querySelector('.autocomplete');
 
+// Append to 'root' our dropdown menu HTML code 
 root.innerHTML = `
     <label><b>Search for a Movie</b></label>
     <input class="input" />
@@ -58,16 +60,24 @@ const resultsWrapper = document.querySelector('.results');
 const onInput = async (event) => {
     const movies = await fetchData(event.target.value);
     
+    // Turn on the isActive flag inside of our menu item (Bulma CSS)
+    dropdown.classList.add('is-active');
+
     // Generate a list of HTML objects programmatically from the movies.Search list
     for (let movie of movies) {
-        const div = document.createElement('div');
+        const option = document.createElement('a');
 
-        div.innerHTML = `
+        // Style the menu using Bulma CSS
+        option.classList.add('dropdown-item');
+
+        // Append HTML to the anchor tag
+        option.innerHTML = `
             <img src="${movie.Poster}" />
-            <h1>${movie.Title} (${movie.Year})</h1>
+            ${movie.Title} (${movie.Year})
         `;
 
-        document.querySelector('#target').appendChild(div);
+        // Append our looped elements to the results-wrapper (Bulma)
+        resultsWrapper.appendChild(option);
     }
 };
 
