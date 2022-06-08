@@ -88,6 +88,14 @@ const onInput = async (event) => {
             ${movie.Title} (${movie.Year})
         `;
 
+        option.addEventListener('click', () => {
+            // Make menu disappear on click of anchor
+            dropdown.classList.remove('is-active');
+
+            // Update the text inside the input
+            input.value = movie.Title;
+        });
+
         // Append our looped elements to the results-wrapper (Bulma)
         resultsWrapper.appendChild(option);
     }
