@@ -60,6 +60,12 @@ const resultsWrapper = document.querySelector('.results');
 const onInput = async (event) => {
     const movies = await fetchData(event.target.value);
 
+    // If there are no results, return nothing
+    if (!movies.length) {
+        dropdown.classList.remove('is-active');
+        return;
+    }
+
     // reset the search results first
     resultsWrapper.innerHTML = '';
     
@@ -89,3 +95,12 @@ const onInput = async (event) => {
 
 // Attach an event listener to the input box
 input.addEventListener('input', debounce(onInput, 500));
+
+// Attach an event listener to test for click events in browser
+// UI feature: if you click anywhere outside of the menu, the menu will close
+document.addEventListener('click', event => {
+    // If the selected element is not in 'root', then close the menu
+    if (!root.contains(event.target)) {
+        dropdown.classList.remove('is-active');
+    }
+});
