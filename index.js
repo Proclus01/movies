@@ -142,6 +142,7 @@ const onMovieSelect = async (movie) => {
 // Once a user clicks a movie to select it, movieTemplate renders the selection
 const movieTemplate = (movieDetail) => {
     return `
+    <div class="container is-fluid">
         <article class="media">
         
             <figure class="media-left">
@@ -158,5 +159,31 @@ const movieTemplate = (movieDetail) => {
             </div>
         
         </article>
+
+        <article class="notification is-primary">
+            <p class="title">${movieDetail.Awards}</p>
+            <p class="subtitle">Awards</p>
+        </article>
+
+        <article class="notification is-primary">
+        <p class="title">${movieDetail.BoxOffice}</p>
+        <p class="subtitle">Box Office</p>
+        </article>
+
+        <article class="notification is-primary">
+        <p class="title">${movieDetail.Metascore}</p>
+        <p class="subtitle">Metascore</p>
+        </article>
+
+        <article class="notification is-primary">
+        <p class="title">${movieDetail.imdbRating}</p>
+        <p class="subtitle">IMDb Rating</p>
+        </article>
+
+        <article class="notification is-primary">
+        <p class="title">${movieDetail.imdbVotes}</p>
+        <p class="subtitle">IMDb Votes</p>
+        </article>
+    </div>
     `;
 };
