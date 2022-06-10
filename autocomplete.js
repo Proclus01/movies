@@ -1,6 +1,6 @@
 // input takes config object, starting with root element
 // root element is a reference to the HTML root object in index.html
-const createAutoComplete = ({ root }) => {
+const createAutoComplete = ({ root, renderOption }) => {
   // Append to 'root' our dropdown menu HTML code
   root.innerHTML = `
     <label><b>Search for a Movie</b></label>
@@ -42,17 +42,13 @@ const createAutoComplete = ({ root }) => {
     for (let movie of movies) {
       const option = document.createElement("a");
 
-      // Check if the poster img has a link, and clear link if val = 'N/A'
-      const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+
 
       // Style the menu using Bulma CSS
       option.classList.add("dropdown-item");
 
       // Append HTML to the anchor tag
-      option.innerHTML = `
-            <img src="${imgSrc}" />
-            ${movie.Title} (${movie.Year})
-        `;
+      option.innerHTML = renderOption(movie);
 
       // Add an event listener to the anchor tag for menu functionality
       option.addEventListener("click", () => {

@@ -35,20 +35,19 @@ const fetchData = async (searchTerm) => {
     return response.data.Search;
 };
 
-// Call createAutocomplete three times to test reusability of autocomplete widget
-
 createAutoComplete({
-    root: document.querySelector('.autocomplete')
-});
+    root: document.querySelector('.autocomplete'),
+    renderOption(movie) {
 
-createAutoComplete({
-    root: document.querySelector('.autocomplete-two')
-});
+        // Check if the poster img has a link, and clear link if val = 'N/A'
+        const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
 
-createAutoComplete({
-    root: document.querySelector('.autocomplete-three')
+        return `
+        <img src="${imgSrc}" />
+        ${movie.Title} (${movie.Year})
+          `;
+    }
 });
-
 
 // Helper function for onInput.
 // onMovieSelect does a follow up search to fetch the selected movie 
