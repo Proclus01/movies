@@ -1,6 +1,6 @@
 // input takes config object, starting with root element
 // root element is a reference to the HTML root object in index.html
-const createAutoComplete = ({ root, renderOption }) => {
+const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue }) => {
   // Append to 'root' our dropdown menu HTML code
   root.innerHTML = `
     <label><b>Search for a Movie</b></label>
@@ -42,8 +42,6 @@ const createAutoComplete = ({ root, renderOption }) => {
     for (let movie of movies) {
       const option = document.createElement("a");
 
-
-
       // Style the menu using Bulma CSS
       option.classList.add("dropdown-item");
 
@@ -56,10 +54,10 @@ const createAutoComplete = ({ root, renderOption }) => {
         dropdown.classList.remove("is-active");
 
         // Update the text inside the input
-        input.value = movie.Title;
+        input.value = inputValue(movie);
 
-        // Selecting a movie from  the menu
-        onMovieSelect(movie);
+        // Selecting an option from  the menu
+        onOptionSelect(movie);
       });
 
       // Append our looped elements to the results-wrapper (Bulma)

@@ -35,6 +35,8 @@ const fetchData = async (searchTerm) => {
     return response.data.Search;
 };
 
+// call this function to create the autocomplete widget
+// createAutoComplete accepts a config object with the following properties:
 createAutoComplete({
     root: document.querySelector('.autocomplete'),
     renderOption(movie) {
@@ -46,6 +48,12 @@ createAutoComplete({
         <img src="${imgSrc}" />
         ${movie.Title} (${movie.Year})
           `;
+    },
+    onOptionSelect(movie) {
+        onMovieSelect(movie);
+    }, 
+    inputValue(movie) {
+        return movie.Title;
     }
 });
 
