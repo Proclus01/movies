@@ -20,9 +20,6 @@ const autoCompleteConfig = {
         ${movie.Title} (${movie.Year})
           `;
     },
-    onOptionSelect(movie) {
-        onMovieSelect(movie);
-    }, 
     inputValue(movie) {
         return movie.Title;
     },
@@ -58,19 +55,29 @@ const autoCompleteConfig = {
 createAutoComplete({
     ...autoCompleteConfig,
     root: document.querySelector('#left-autocomplete'),
-
+    onOptionSelect(movie) {
+        // Hide the tutorial div
+        document.querySelector('.tutorial').classList.add('is-hidden');
+        // Render the movie info
+        onMovieSelect(movie, document.querySelector('#left-summary'));
+    }, 
 });
 
 createAutoComplete({
     ...autoCompleteConfig,
     root: document.querySelector('#right-autocomplete'),
-
+    onOptionSelect(movie) {
+        // Hide the tutorial div
+        document.querySelector('.tutorial').classList.add('is-hidden');
+        // Render the movie info
+        onMovieSelect(movie, document.querySelector('#right-summary'));
+    }, 
 });
 
 // Helper function for onInput.
 // onMovieSelect does a follow up search to fetch the selected movie 
 // using the movie.imdbID attribute
-const onMovieSelect = async (movie) => {
+const onMovieSelect = async (movie, summaryElement) => {
     const response = await axios.get('http://www.omdbapi.com/', {
 
         // params are from the OMDb API documentation: an API key and an 's' search parameter
@@ -81,8 +88,8 @@ const onMovieSelect = async (movie) => {
             }
         });
 
-    // Insert movieTemplate's HTML into the #summary tag
-    document.querySelector('#summary').innerHTML = movieTemplate(response.data);
+    // Insert movieTemplate's HTML into summaryElement target
+    summaryElement.innerHTML = movieTemplate(response.data);
 };
 
 // Takes movie data from onMovieSelect and generates HTML from the data
