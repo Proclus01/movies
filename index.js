@@ -111,8 +111,33 @@ const onMovieSelect = async (movie, summaryElement, side) => {
 
 // runComparison will compare our custom data-value properties
 // and then will apply stylings to visualize value comparisons
+// runComparison iterates over our HTML articles rendered by movieTemplate
 const runComparison = () => {
-    console.log('Time for comparison');
+    
+    // Extract the HTML information into a arrays
+    const leftSideStats = document.querySelectorAll('#left-summary .notification');
+    const rightSideStats = document.querySelectorAll('#right-summary .notification');
+
+    // iterate using left-summary first
+    leftSideStats.forEach((leftStat, index) => {
+        // iterate over right-summary alongside our left-summary
+        const rightStat = rightSideStats[index];
+
+        // capture the numerical values of the statistics and convert STR to INT
+        const leftSideValue = parseInt(leftStat.dataset.value);
+        const rightSideValue = parseInt(rightStat.dataset.value);
+
+        // Take the lesser value of the compared elements and paint the element yellow
+        if (rightSideValue > leftSideValue) {
+            leftStat.classList.remove('is-primary');
+            leftStat.classList.add('is-warning');
+        } else {
+            rightStat.classList.remove('is-primary');
+            rightStat.classList.add('is-warning');            
+        }
+
+    });
+
 };
 
 // Takes movie data from onMovieSelect and generates HTML from the data
