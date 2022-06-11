@@ -9,32 +9,6 @@
 const key = ''; // please add in your own API key
 // const key = process.env.API_KEY; // or use a .env file instead
 
-// Fetch some data using an async function
-// Accepts a user text input and performs a search of OMDb
-const fetchData = async (searchTerm) => {
-
-    // response stores the axios.get request
-    // Two arguments are taken: a URI and a {params: {}} object
-    const response = await axios.get('http://www.omdbapi.com/', {
-
-    // params are from the OMDb API documentation: an API key and a 's' search parameter
-    // switch 's' for 'i' when you need to do a lookup instead of a search
-        params: {
-            apikey: key, 
-            s: searchTerm
-        }
-    });
-
-    // if there's an error due to no file being returned
-    // then make sure that at least an empty array is returned
-    // since our onInput expects a parameter
-    if (response.data.Error) {
-        return [];
-    }
-
-    return response.data.Search;
-};
-
 // call this function to create the autocomplete widget
 // createAutoComplete accepts a config object with the following properties:
 createAutoComplete({
@@ -54,6 +28,31 @@ createAutoComplete({
     }, 
     inputValue(movie) {
         return movie.Title;
+    },
+    async fetchData(searchTerm) {
+        // Fetch some data using an async function
+        // Accepts a user text input and performs a search of OMDb
+
+        // response stores the axios.get request
+        // Two arguments are taken: a URI and a {params: {}} object
+        const response = await axios.get('http://www.omdbapi.com/', {
+    
+        // params are from the OMDb API documentation: an API key and a 's' search parameter
+        // switch 's' for 'i' when you need to do a lookup instead of a search
+            params: {
+                apikey: key, 
+                s: searchTerm
+            }
+        });
+    
+        // if there's an error due to no file being returned
+        // then make sure that at least an empty array is returned
+        // since our onInput expects a parameter
+        if (response.data.Error) {
+            return [];
+        }
+    
+        return response.data.Search;
     }
 });
 
@@ -63,7 +62,7 @@ createAutoComplete({
 const onMovieSelect = async (movie) => {
     const response = await axios.get('http://www.omdbapi.com/', {
 
-        // params are from the OMDb API documentation: an API key and a 's' search parameter
+        // params are from the OMDb API documentation: an API key and an 's' search parameter
         // switch 's' for 'i' when you need to do a lookup instead of a search
             params: {
                 apikey: key,

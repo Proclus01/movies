@@ -1,9 +1,15 @@
 // input takes config object, starting with root element
 // root element is a reference to the HTML root object in index.html
-const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue }) => {
+const createAutoComplete = ({ 
+    root, 
+    renderOption, 
+    onOptionSelect, 
+    inputValue, 
+    fetchData
+    }) => {
   // Append to 'root' our dropdown menu HTML code
   root.innerHTML = `
-    <label><b>Search for a Movie</b></label>
+    <label><b>Search</b></label>
     <input class="input" />
     <div class="dropdown">
         <div class="dropdown-menu">
@@ -23,11 +29,11 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue }) 
   // onInput contains a large part of the main logic of this app
   // It appends a series of HTML objects to the 'root' dropdown menu, styled with Bulma CSS
   const onInput = async (event) => {
-    // Get the movie list from OMDb API
-    const movies = await fetchData(event.target.value);
+    // Get the data object from the API
+    const items = await fetchData(event.target.value);
 
     // If there are no results, return nothing
-    if (!movies.length) {
+    if (!items.length) {
       dropdown.classList.remove("is-active");
       return;
     }
@@ -38,15 +44,15 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue }) 
     // Turn on the isActive flag inside of our menu item (Bulma CSS)
     dropdown.classList.add("is-active");
 
-    // Generate a list of HTML objects programmatically from the movies.Search list
-    for (let movie of movies) {
+    // Generate a list of HTML objects programmatically from the search results
+    for (let item of items) {
       const option = document.createElement("a");
 
       // Style the menu using Bulma CSS
       option.classList.add("dropdown-item");
 
       // Append HTML to the anchor tag
-      option.innerHTML = renderOption(movie);
+      option.innerHTML = renderOption(item);
 
       // Add an event listener to the anchor tag for menu functionality
       option.addEventListener("click", () => {
@@ -54,10 +60,10 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue }) 
         dropdown.classList.remove("is-active");
 
         // Update the text inside the input
-        input.value = inputValue(movie);
+        input.value = inputValue(item);
 
         // Selecting an option from  the menu
-        onOptionSelect(movie);
+        onOptionSelect(item);
       });
 
       // Append our looped elements to the results-wrapper (Bulma)
