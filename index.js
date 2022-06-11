@@ -127,9 +127,21 @@ const movieTemplate = (movieDetail) => {
     const imdbRating = parseFloat(movieDetail.imdbRating);
     const imdbVotes = parseInt(movieDetail.imdbVotes.replace(/,/g, ''));
 
+    // Sum up all the numerical values inside of the Awards property
+    // First convert from str to arr, then parseInt, then sum the numerical entries
+    const awards = movieDetail.Awards.split(' ').reduce(
+        (prev, word) => {
 
-    console.log(dollars, metascore, imdbRating, imdbVotes);
+            const value = parseInt(word);
 
+            if (isNaN(value)) {
+                return prev;
+            } else {
+                return prev + value;
+            }
+
+        }, 0
+        );
 
     return `
     <div class="container is-fluid">
