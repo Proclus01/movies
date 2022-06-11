@@ -59,7 +59,7 @@ createAutoComplete({
         // Hide the tutorial div
         document.querySelector('.tutorial').classList.add('is-hidden');
         // Render the movie info
-        onMovieSelect(movie, document.querySelector('#left-summary'));
+        onMovieSelect(movie, document.querySelector('#left-summary'), 'left');
     }, 
 });
 
@@ -70,14 +70,18 @@ createAutoComplete({
         // Hide the tutorial div
         document.querySelector('.tutorial').classList.add('is-hidden');
         // Render the movie info
-        onMovieSelect(movie, document.querySelector('#right-summary'));
+        onMovieSelect(movie, document.querySelector('#right-summary'), 'right');
     }, 
 });
+
+// Storage variables for movie information to be used in onMovieSelect
+let leftMovie;
+let rightMovie;
 
 // Helper function for onInput.
 // onMovieSelect does a follow up search to fetch the selected movie 
 // using the movie.imdbID attribute
-const onMovieSelect = async (movie, summaryElement) => {
+const onMovieSelect = async (movie, summaryElement, side) => {
     const response = await axios.get('http://www.omdbapi.com/', {
 
         // params are from the OMDb API documentation: an API key and an 's' search parameter
@@ -90,6 +94,20 @@ const onMovieSelect = async (movie, summaryElement) => {
 
     // Insert movieTemplate's HTML into summaryElement target
     summaryElement.innerHTML = movieTemplate(response.data);
+
+    if (side === 'left') {
+        leftMovie = response.data;
+    } else {
+        rightMovie = response.data
+    }
+
+    if (leftMovie && rightMovie) {
+        runComparison();
+    }
+};
+
+const runComparison = () => {
+    console.log('Time for comparison');
 };
 
 // Takes movie data from onMovieSelect and generates HTML from the data
