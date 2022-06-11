@@ -1,4 +1,4 @@
-//jshint esversion: 7
+//jshint esversion: 9
 
 // comment out the line below to enable axios script for in-browser use
 // const { default: axios } = require("axios");
@@ -9,10 +9,7 @@
 const key = ''; // please add in your own API key
 // const key = process.env.API_KEY; // or use a .env file instead
 
-// call this function to create the autocomplete widget
-// createAutoComplete accepts a config object with the following properties:
-createAutoComplete({
-    root: document.querySelector('.autocomplete'),
+const autoCompleteConfig = {
     renderOption(movie) {
 
         // Check if the poster img has a link, and clear link if val = 'N/A'
@@ -54,6 +51,20 @@ createAutoComplete({
     
         return response.data.Search;
     }
+};
+
+// call this function to create the autocomplete widget
+// createAutoComplete accepts a config object with the following properties:
+createAutoComplete({
+    ...autoCompleteConfig,
+    root: document.querySelector('#left-autocomplete'),
+
+});
+
+createAutoComplete({
+    ...autoCompleteConfig,
+    root: document.querySelector('#right-autocomplete'),
+
 });
 
 // Helper function for onInput.
