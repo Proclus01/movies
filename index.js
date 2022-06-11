@@ -95,17 +95,22 @@ const onMovieSelect = async (movie, summaryElement, side) => {
     // Insert movieTemplate's HTML into summaryElement target
     summaryElement.innerHTML = movieTemplate(response.data);
 
+    // If there is data in any one autocomplete,
+    // then store that data inside of our storage variables
     if (side === 'left') {
         leftMovie = response.data;
     } else {
         rightMovie = response.data
     }
 
+    // if both autocompletes are populated, then compare them
     if (leftMovie && rightMovie) {
         runComparison();
     }
 };
 
+// runComparison will compare our custom data-value properties
+// and then will apply stylings to visualize value comparisons
 const runComparison = () => {
     console.log('Time for comparison');
 };
@@ -113,6 +118,19 @@ const runComparison = () => {
 // Takes movie data from onMovieSelect and generates HTML from the data
 // Once a user clicks a movie to select it, movieTemplate renders the selection
 const movieTemplate = (movieDetail) => {
+
+    // Extract data from object and store in variables
+
+    // strip any $, decimals, and commmas, change data from STR to INT
+    const dollars = parseInt(movieDetail.BoxOffice.replace(/\$/g, '').replace(/,/g, ''));
+    const metascore = parseInt(movieDetail.Metascore);
+    const imdbRating = parseFloat(movieDetail.imdbRating);
+    const imdbVotes = parseInt(movieDetail.imdbVotes.replace(/,/g, ''));
+
+
+    console.log(dollars, metascore, imdbRating, imdbVotes);
+
+
     return `
     <div class="container is-fluid">
         <article class="media">
@@ -132,27 +150,27 @@ const movieTemplate = (movieDetail) => {
         
         </article>
 
-        <article class="notification is-primary">
+        <article data-value="" class="notification is-primary">
             <p class="title">${movieDetail.Awards}</p>
             <p class="subtitle">Awards</p>
         </article>
 
-        <article class="notification is-primary">
+        <article data-value="" class="notification is-primary">
         <p class="title">${movieDetail.BoxOffice}</p>
         <p class="subtitle">Box Office</p>
         </article>
 
-        <article class="notification is-primary">
+        <article data-value="" class="notification is-primary">
         <p class="title">${movieDetail.Metascore}</p>
         <p class="subtitle">Metascore</p>
         </article>
 
-        <article class="notification is-primary">
+        <article data-value="" class="notification is-primary">
         <p class="title">${movieDetail.imdbRating}</p>
         <p class="subtitle">IMDb Rating</p>
         </article>
 
-        <article class="notification is-primary">
+        <article data-value="" class="notification is-primary">
         <p class="title">${movieDetail.imdbVotes}</p>
         <p class="subtitle">IMDb Votes</p>
         </article>
